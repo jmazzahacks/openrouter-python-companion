@@ -59,29 +59,28 @@ class ModelFilter:
     
     def _apply_sort(self, models: List[ModelInfo], sort_order: SortOrder) -> List[ModelInfo]:
         """
-        Apply sorting to a list of models.
+        Apply sorting to a list of models and return a new list (non-mutating).
         
         Args:
             models: List of models to sort
             sort_order: How to sort the models
             
         Returns:
-            Sorted list of models (sorts in place and returns for chaining)
+            New list of models sorted according to sort_order
         """
         if sort_order == SortOrder.PRICE_ASC:
-            models.sort(key=ModelInfo.get_pricing_per_1m_tokens)
-        elif sort_order == SortOrder.PRICE_DESC:
-            models.sort(key=ModelInfo.get_pricing_per_1m_tokens, reverse=True)
-        elif sort_order == SortOrder.NAME_ASC:
-            models.sort(key=ModelInfo.get_sort_name)
-        elif sort_order == SortOrder.NAME_DESC:
-            models.sort(key=ModelInfo.get_sort_name, reverse=True)
-        elif sort_order == SortOrder.CONTEXT_ASC:
-            models.sort(key=ModelInfo.get_context_length_sort)
-        elif sort_order == SortOrder.CONTEXT_DESC:
-            models.sort(key=ModelInfo.get_context_length_sort, reverse=True)
-        
-        return models
+            return sorted(models, key=ModelInfo.get_pricing_per_1m_tokens)
+        if sort_order == SortOrder.PRICE_DESC:
+            return sorted(models, key=ModelInfo.get_pricing_per_1m_tokens, reverse=True)
+        if sort_order == SortOrder.NAME_ASC:
+            return sorted(models, key=ModelInfo.get_sort_name)
+        if sort_order == SortOrder.NAME_DESC:
+            return sorted(models, key=ModelInfo.get_sort_name, reverse=True)
+        if sort_order == SortOrder.CONTEXT_ASC:
+            return sorted(models, key=ModelInfo.get_context_length_sort)
+        if sort_order == SortOrder.CONTEXT_DESC:
+            return sorted(models, key=ModelInfo.get_context_length_sort, reverse=True)
+        return list(models)
     
     def filter_models(
         self,
