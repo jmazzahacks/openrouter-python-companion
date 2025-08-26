@@ -53,8 +53,14 @@ class ModelFilter:
             
         Returns:
             List of ModelInfo objects
+            
+        Raises:
+            RuntimeError: If the API request fails
         """
-        response = self.client.models.list(details=details)
+        try:
+            response = self.client.models.list(details=details)
+        except Exception as e:
+            raise RuntimeError(f"Failed to fetch models from OpenRouter API: {e}") from e
         return [ModelInfo(model) for model in response.data]
     
     def _apply_sort(self, models: List[ModelInfo], sort_order: SortOrder) -> List[ModelInfo]:
