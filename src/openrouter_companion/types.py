@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 class ModelInfo:
     """Wrapper for OpenRouter model information with utility methods."""
     
-    def __init__(self, model: Any):
+    def __init__(self, model: Any) -> None:
         """
         Initialize ModelInfo from an OpenRouter model object.
         

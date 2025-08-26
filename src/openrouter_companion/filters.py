@@ -17,7 +17,7 @@ class ModelFilter:
         self, 
         client: Optional[OpenRouterClient] = None,
         api_key: Optional[str] = None
-    ):
+    ) -> None:
         """
         Initialize ModelFilter.
         
