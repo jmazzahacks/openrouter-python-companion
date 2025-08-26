@@ -2,8 +2,8 @@
 Type definitions for OpenRouter Companion.
 """
 
-from typing import Any, List, Optional
-from dataclasses import dataclass
+from typing import Any, List, Optional, Callable
+from dataclasses import dataclass, field
 
 
 class ModelInfo:
@@ -119,17 +119,17 @@ class ModelInfo:
         return self.context_length or 0
 
 
+def _default_deprecation_keywords() -> List[str]:
+    return [
+        'deprecated',
+        'removed',
+        'discontinued',
+        'being deprecated',
+    ]
+
+
 @dataclass
 class FilterConfig:
     """Configuration for model filtering."""
     include_deprecated: bool = False
-    deprecation_keywords: List[str] = None
-
-    def __post_init__(self) -> None:
-        if self.deprecation_keywords is None:
-            self.deprecation_keywords = [
-                'deprecated', 
-                'removed', 
-                'discontinued', 
-                'being deprecated'
-            ]
+    deprecation_keywords: List[str] = field(default_factory=_default_deprecation_keywords)
