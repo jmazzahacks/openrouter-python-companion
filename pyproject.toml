@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openrouter-companion"
-version = "0.1.3"
+version = "0.1.4"
 description = "A Python companion library for filtering and analyzing OpenRouter models by capabilities (image input, structured output), pricing, and features. Easily find models that meet specific requirements, compare costs, and discover free alternatives with a simple, composable API."
 readme = "README.md"
 license = {text = "MIT"}
@@ -25,6 +25,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
 ]
 dependencies = []
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 standard = [
@@ -33,7 +34,6 @@ standard = [
 dev = [
     "openrouter-client-unofficial @ git+https://github.com/jmazzahacks/openrouter-python-client.git",
 ]
-requires-python = ">=3.9"
 
 [project.urls]
 "Homepage" = "https://github.com/jmazzahacks/openrouter-python-companion"
