@@ -118,6 +118,16 @@ class ModelInfo:
         """Get context length for sorting (0 if not available)."""
         return self.context_length or 0
 
+    def has_canonical_slug_mismatch(self) -> bool:
+        """
+        Check if model ID doesn't match canonical slug, indicating a potentially problematic variant.
+
+        Returns:
+            bool: True if ID != canonical_slug, suggesting this is a variant that might not work
+        """
+        canonical_slug = getattr(self, 'canonical_slug', None)
+        return canonical_slug is not None and self.id != canonical_slug
+
 
 def _default_deprecation_keywords() -> List[str]:
     return [
@@ -132,4 +142,5 @@ def _default_deprecation_keywords() -> List[str]:
 class FilterConfig:
     """Configuration for model filtering."""
     include_deprecated: bool = False
+    include_problematic_variants: bool = False
     deprecation_keywords: List[str] = field(default_factory=_default_deprecation_keywords)

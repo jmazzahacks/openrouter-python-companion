@@ -13,7 +13,7 @@ import os
 # Add src directory to path to import the library
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from openrouter_companion import ModelFilter, ModelInfo
+from openrouter_companion import ModelFilter, ModelInfo, ModelCapability, SortOrder
 
 if __name__ == "__main__":
     print("Finding models that support structured output (sorted by price)...\n")
@@ -22,7 +22,6 @@ if __name__ == "__main__":
     filter_obj = ModelFilter()
     
     # Get models with structured output support
-    from openrouter_companion import ModelCapability, SortOrder
     models = filter_obj.filter_models(
         capabilities=ModelCapability.STRUCTURED_OUTPUT,
         include_deprecated=False,
@@ -34,7 +33,7 @@ if __name__ == "__main__":
     for model in models:
         print(f"- {model.id}")
         
-        if hasattr(model, 'name') and model.name:
+        if model.name:
             print(f"  Name: {model.name}")
         
         # Show pricing per 1M tokens
@@ -46,7 +45,8 @@ if __name__ == "__main__":
         else:
             print(f"  Price: ${price_per_1m:.2f} per 1M prompt tokens")
         
-        if hasattr(model, 'supported_parameters') and model.supported_parameters:
+        # Show structured output support details
+        if model.supported_parameters:
             structured_params = [p for p in model.supported_parameters if p in ['response_format', 'structured_outputs']]
             print(f"  Structured output support: {structured_params}")
         print()

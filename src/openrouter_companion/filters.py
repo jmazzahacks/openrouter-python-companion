@@ -30,19 +30,32 @@ class ModelFilter:
     def _is_deprecated(self, model: ModelInfo, config: FilterConfig) -> bool:
         """
         Check if a model is deprecated based on its description.
-        
+
         Args:
             model: Model information object
             config: Filter configuration
-            
+
         Returns:
             bool: True if model appears to be deprecated
         """
         if not model.description:
             return False
-            
+
         desc_lower = model.description.lower()
         return any(keyword in desc_lower for keyword in config.deprecation_keywords)
+
+    def _is_problematic_variant(self, model: ModelInfo, config: FilterConfig) -> bool:
+        """
+        Check if a model is a problematic variant based on canonical slug mismatch.
+
+        Args:
+            model: Model information object
+            config: Filter configuration
+
+        Returns:
+            bool: True if model appears to be a problematic variant
+        """
+        return model.has_canonical_slug_mismatch()
     
     def _fetch_models(self, details: bool = True) -> List[ModelInfo]:
         """
@@ -92,49 +105,58 @@ class ModelFilter:
         self,
         capabilities: ModelCapability = ModelCapability.NONE,
         include_deprecated: bool = False,
+        include_problematic_variants: bool = False,
         sort_order: SortOrder = SortOrder.PRICE_ASC
     ) -> List[ModelInfo]:
         """
         Filter models by capabilities with flexible sorting.
-        
+
         Args:
             capabilities: Flags for required capabilities (can be combined with |)
             include_deprecated: Whether to include deprecated models
+            include_problematic_variants: Whether to include models with canonical slug mismatches
             sort_order: How to sort the results
-            
+
         Returns:
             List of models matching all specified capabilities
-            
+
         Examples:
             # Get models with image input
             filter_models(ModelCapability.IMAGE_INPUT)
-            
+
             # Get models with both image input AND structured output
             filter_models(ModelCapability.IMAGE_INPUT | ModelCapability.STRUCTURED_OUTPUT)
-            
+
             # Get all models, sorted by context length
             filter_models(sort_order=SortOrder.CONTEXT_DESC)
         """
-        config = FilterConfig(include_deprecated=include_deprecated)
+        config = FilterConfig(
+            include_deprecated=include_deprecated,
+            include_problematic_variants=include_problematic_variants
+        )
         models = self._fetch_models(details=True)
-        
+
         filtered_models = []
         for model in models:
             # Check each required capability
             if capabilities & ModelCapability.IMAGE_INPUT:
                 if not model.supports_images():
                     continue
-            
+
             if capabilities & ModelCapability.STRUCTURED_OUTPUT:
                 if not model.supports_structured_output():
                     continue
-            
+
             # Skip deprecated models if configured
             if not include_deprecated and self._is_deprecated(model, config):
                 continue
-            
+
+            # Skip problematic variants if configured
+            if not include_problematic_variants and self._is_problematic_variant(model, config):
+                continue
+
             filtered_models.append(model)
-        
+
         return self._apply_sort(filtered_models, sort_order)
     
 
