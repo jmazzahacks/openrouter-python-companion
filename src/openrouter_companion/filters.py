@@ -147,6 +147,10 @@ class ModelFilter:
                 if not model.supports_structured_output():
                     continue
 
+            if capabilities & ModelCapability.REASONING:
+                if not model.supports_reasoning():
+                    continue
+
             # Skip deprecated models if configured
             if not include_deprecated and self._is_deprecated(model, config):
                 continue

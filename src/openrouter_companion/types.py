@@ -106,10 +106,16 @@ class ModelInfo:
     def supports_structured_output(self) -> bool:
         """Check if model supports structured output."""
         if self.supported_parameters:
-            return ('response_format' in self.supported_parameters or 
+            return ('response_format' in self.supported_parameters or
                     'structured_outputs' in self.supported_parameters)
         return False
-    
+
+    def supports_reasoning(self) -> bool:
+        """Check if model supports reasoning/thinking mode."""
+        if self.supported_parameters:
+            return 'reasoning' in self.supported_parameters
+        return False
+
     def get_sort_name(self) -> str:
         """Get name for sorting (uses ID if name not available)."""
         return self.name or self.id

@@ -10,10 +10,11 @@ class ModelCapability(Flag):
     NONE = 0
     IMAGE_INPUT = auto()
     STRUCTURED_OUTPUT = auto()
-    
+    REASONING = auto()
+
     # Convenience combinations
     MULTIMODAL = IMAGE_INPUT
-    ALL = IMAGE_INPUT | STRUCTURED_OUTPUT
+    ALL = IMAGE_INPUT | STRUCTURED_OUTPUT | REASONING
 
 
 class SortOrder(Enum):
