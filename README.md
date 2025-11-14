@@ -236,6 +236,12 @@ all_models = filter_obj.filter_models(
     include_deprecated=True,
     sort_order=SortOrder.CONTEXT_DESC
 )
+
+# Exclude model variants (may filter out some legitimate models)
+# Note: By default, all variants are included
+strict_models = filter_obj.filter_models(
+    include_problematic_variants=False
+)
 ```
 
 #### Pricing Analysis
@@ -340,15 +346,16 @@ review_prompt = string_prompt.render(
 def filter_models(
     capabilities: ModelCapability = ModelCapability.NONE,
     include_deprecated: bool = False,
-    include_problematic_variants: bool = False,
+    include_problematic_variants: bool = True,
     sort_order: SortOrder = SortOrder.NONE
 ) -> List[ModelInfo]:
 ```
 
 **Parameters:**
 - `capabilities`: Capability flags to filter by (can be combined with `|`)
-- `include_deprecated`: Whether to include deprecated models
-- `include_problematic_variants`: Whether to include models with canonical slug mismatches
+- `include_deprecated`: Whether to include deprecated models (default: False)
+- `include_problematic_variants`: Whether to include models with canonical slug mismatches (default: True).
+  Set to False to exclude variants, but note this may also filter out legitimate flagship models.
 - `sort_order`: How to sort the results
 
 **Returns:** List of ModelInfo objects matching the criteria

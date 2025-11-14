@@ -105,7 +105,7 @@ class ModelFilter:
         self,
         capabilities: ModelCapability = ModelCapability.NONE,
         include_deprecated: bool = False,
-        include_problematic_variants: bool = False,
+        include_problematic_variants: bool = True,
         sort_order: SortOrder = SortOrder.PRICE_ASC
     ) -> List[ModelInfo]:
         """
@@ -114,7 +114,8 @@ class ModelFilter:
         Args:
             capabilities: Flags for required capabilities (can be combined with |)
             include_deprecated: Whether to include deprecated models
-            include_problematic_variants: Whether to include models with canonical slug mismatches
+            include_problematic_variants: Whether to include models with canonical slug mismatches (default: True).
+                Set to False to exclude model variants, but note this may also exclude legitimate models.
             sort_order: How to sort the results
 
         Returns:
