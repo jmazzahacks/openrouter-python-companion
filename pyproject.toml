@@ -4,10 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openrouter-companion"
-version = "0.1.15"
+version = "0.1.16"
 description = "A Python companion library for filtering and analyzing OpenRouter models by capabilities (image input, structured output), pricing, and features. Easily find models that meet specific requirements, compare costs, and discover free alternatives with a simple, composable API."
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "MIT License"}
+keywords = ["openrouter", "llm", "models", "ai", "filtering", "pricing", "prompts"]
 authors = [
     {name = "Jason Byteforge", email = "jason@mzmail.me"}
 ]

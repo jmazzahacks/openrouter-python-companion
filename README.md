@@ -8,14 +8,24 @@ A comprehensive Python library for working with OpenRouter models, providing uti
 
 ## Installation
 
+Install directly from GitHub:
+
 ```bash
-pip install -e .
+pip install git+https://github.com/jmazzahacks/openrouter-python-companion.git
 ```
 
-Or install just the dependencies:
+As a dependency in another project's `pyproject.toml`:
 
-```bash
-pip install -r requirements.txt
+```toml
+dependencies = [
+    "openrouter-companion @ git+https://github.com/jmazzahacks/openrouter-python-companion.git",
+]
+```
+
+Or in `requirements.txt`:
+
+```
+openrouter-companion @ git+https://github.com/jmazzahacks/openrouter-python-companion.git
 ```
 
 ### Requirements
