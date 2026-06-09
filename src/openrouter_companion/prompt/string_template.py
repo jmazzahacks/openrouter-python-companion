@@ -1,5 +1,6 @@
 """String template prompt with variable substitution."""
 
+import re
 from string import Template
 from typing import Any
 from .base import Prompt
@@ -59,7 +60,6 @@ class StringTemplatePrompt(Prompt):
         Returns:
             List of variable names found in the template
         """
-        import re
         # Find all $variable patterns
         pattern = r'\$([a-zA-Z_][a-zA-Z0-9_]*)'
         matches = re.findall(pattern, self.template_string)

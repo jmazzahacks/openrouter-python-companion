@@ -44,13 +44,12 @@ class ModelFilter:
         desc_lower = model.description.lower()
         return any(keyword in desc_lower for keyword in config.deprecation_keywords)
 
-    def _is_problematic_variant(self, model: ModelInfo, config: FilterConfig) -> bool:
+    def _is_problematic_variant(self, model: ModelInfo) -> bool:
         """
         Check if a model is a problematic variant based on canonical slug mismatch.
 
         Args:
             model: Model information object
-            config: Filter configuration
 
         Returns:
             bool: True if model appears to be a problematic variant
@@ -131,10 +130,7 @@ class ModelFilter:
             # Get all models, sorted by context length
             filter_models(sort_order=SortOrder.CONTEXT_DESC)
         """
-        config = FilterConfig(
-            include_deprecated=include_deprecated,
-            include_problematic_variants=include_problematic_variants
-        )
+        config = FilterConfig()
         models = self._fetch_models(details=True)
 
         filtered_models = []
@@ -157,7 +153,7 @@ class ModelFilter:
                 continue
 
             # Skip problematic variants if configured
-            if not include_problematic_variants and self._is_problematic_variant(model, config):
+            if not include_problematic_variants and self._is_problematic_variant(model):
                 continue
 
             filtered_models.append(model)

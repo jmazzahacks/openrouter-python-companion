@@ -67,39 +67,3 @@ class Prompt(ABC):
             Additional content to append, or empty string if none
         """
         return ""
-    
-    def validate_params(self, **kwargs: Any) -> None:
-        """Validate prompt parameters.
-        
-        Args:
-            **kwargs: Parameters to validate
-            
-        Raises:
-            ValueError: If parameters are invalid
-        """
-        # Default implementation does no validation
-        pass
-    
-    def get_required_params(self) -> list[str]:
-        """Get list of required parameter names.
-        
-        Returns:
-            List of required parameter names
-        """
-        return []
-    
-    def get_optional_params(self) -> list[str]:
-        """Get list of optional parameter names.
-        
-        Returns:
-            List of optional parameter names
-        """
-        return []
-    
-    def get_schema(self) -> dict[str, Any] | None:
-        """Get the JSON schema for structured output from this prompt.
-        
-        Returns:
-            JSON schema dictionary or None if no structured output expected
-        """
-        return None

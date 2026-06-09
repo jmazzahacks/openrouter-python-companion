@@ -2,7 +2,7 @@
 Type definitions for OpenRouter Companion.
 """
 
-from typing import Any, List, Optional, Callable
+from typing import Any, List, Optional
 from dataclasses import dataclass, field
 
 
@@ -147,6 +147,4 @@ def _default_deprecation_keywords() -> List[str]:
 @dataclass
 class FilterConfig:
     """Configuration for model filtering."""
-    include_deprecated: bool = False
-    include_problematic_variants: bool = False
     deprecation_keywords: List[str] = field(default_factory=_default_deprecation_keywords)

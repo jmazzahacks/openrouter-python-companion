@@ -1,6 +1,5 @@
 """Template loader prompt for loading file-based templates."""
 
-import os
 from typing import Any
 from .base import Prompt
 
@@ -37,28 +36,3 @@ class FileTemplatePrompt(Prompt):
             raise FileNotFoundError(f"Template file not found: {self.template_path}")
         except IOError as e:
             raise IOError(f"Could not read template file {self.template_path}: {e}") from e
-    
-    def validate_params(self, **kwargs: Any) -> None:
-        """Validate template loader parameters."""
-        # Check if template file exists
-        if not os.path.exists(self.template_path):
-            raise ValueError(f"Template file not found: {self.template_path}")
-        
-        if not os.path.isfile(self.template_path):
-            raise ValueError(f"Template path is not a file: {self.template_path}")
-    
-    def get_template_path(self) -> str:
-        """Get the current template file path.
-        
-        Returns:
-            Path to the template file
-        """
-        return self.template_path
-    
-    def set_template_path(self, path: str) -> None:
-        """Set a new template file path.
-        
-        Args:
-            path: New path to the template file
-        """
-        self.template_path = path

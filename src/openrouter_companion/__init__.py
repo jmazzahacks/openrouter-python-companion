@@ -8,7 +8,7 @@ from .enums import ModelCapability, SortOrder
 from .utils import get_client
 from .prompt import Prompt, FileTemplatePrompt, StringTemplatePrompt
 
-__version__ = "0.1.5"
+__version__ = "0.1.10"
 __all__ = [
     "ModelFilter",
     "ModelInfo",
