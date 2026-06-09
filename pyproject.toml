@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openrouter-companion"
-version = "0.1.13"
+version = "0.1.14"
 description = "A Python companion library for filtering and analyzing OpenRouter models by capabilities (image input, structured output), pricing, and features. Easily find models that meet specific requirements, compare costs, and discover free alternatives with a simple, composable API."
 readme = "README.md"
 license = {text = "MIT"}
@@ -29,6 +29,9 @@ dependencies = [
 ]
 requires-python = ">=3.9"
 
+[project.optional-dependencies]
+test = ["pytest"]
+
 [project.urls]
 "Homepage" = "https://github.com/jmazzahacks/openrouter-python-companion"
 "Bug Reports" = "https://github.com/jmazzahacks/openrouter-python-companion/issues"
@@ -39,3 +42,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/openrouter_companion"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
