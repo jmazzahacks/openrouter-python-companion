@@ -19,44 +19,14 @@ class ModelInfo:
         self._model = model
         
     def __getattr__(self, name: str) -> Any:
-        """Delegate attribute access to the wrapped model."""
+        """Delegate attribute access to the wrapped model.
+
+        Plain field reads (id, name, description, pricing, architecture,
+        supported_parameters, context_length, canonical_slug, ...) fall through
+        to the underlying ModelData, so they are not re-declared here.
+        """
         return getattr(self._model, name)
-    
-    @property
-    def id(self) -> str:
-        """Get model ID."""
-        return self._model.id
-    
-    @property
-    def name(self) -> Optional[str]:
-        """Get model name."""
-        return getattr(self._model, 'name', None)
-    
-    @property
-    def description(self) -> Optional[str]:
-        """Get model description."""
-        return getattr(self._model, 'description', None)
-    
-    @property
-    def pricing(self) -> Optional[Any]:
-        """Get model pricing object."""
-        return getattr(self._model, 'pricing', None)
-    
-    @property
-    def architecture(self) -> Optional[Any]:
-        """Get model architecture object."""
-        return getattr(self._model, 'architecture', None)
-    
-    @property
-    def supported_parameters(self) -> Optional[List[str]]:
-        """Get supported parameters list."""
-        return getattr(self._model, 'supported_parameters', None)
-    
-    @property
-    def context_length(self) -> Optional[int]:
-        """Get context length."""
-        return getattr(self._model, 'context_length', None)
-    
+
     def get_pricing_per_1m_tokens(self) -> float:
         """
         Get prompt pricing per 1M tokens.

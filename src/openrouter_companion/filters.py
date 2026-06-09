@@ -7,7 +7,6 @@ from openrouter_client import OpenRouterClient
 
 from .types import ModelInfo, FilterConfig
 from .enums import ModelCapability, SortOrder
-from .utils import get_client
 
 
 class ModelFilter:
@@ -23,9 +22,11 @@ class ModelFilter:
         
         Args:
             client: Optional OpenRouter client instance
-            api_key: Optional API key (used if client not provided)
+            api_key: Optional API key. If neither client nor api_key is given,
+                OpenRouterClient falls back to the OPENROUTER_API_KEY env var
+                and raises if it is unset.
         """
-        self.client = client or get_client(api_key)
+        self.client = client or OpenRouterClient(api_key=api_key)
         
     def _is_deprecated(self, model: ModelInfo, config: FilterConfig) -> bool:
         """
