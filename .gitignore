@@ -1,0 +1,23 @@
+# Local-only example/utility scripts (kept handy, not shipped)
+scripts/
+CRUSH.md
+
+.mypy_cache/*
+.pytest_cache/*
+.venv/*
+.vscode/*
+dist/*
+*__pycache__*
+src/openrouter_client_unofficial.egg-info/*
+.mdignore
+AGENT.md
+api_reference.md
+api_streaming.md
+CLAUDE.md
+file_skeletons.md
+layout.md
+openrouter_api_spec.md
+openrouter-client.md
+test_imports.py
+future_todos.txt
+*.json
