@@ -1,6 +1,6 @@
 # OpenRouter Python Companion
 
-A comprehensive Python library for working with OpenRouter models, providing utilities for filtering, analyzing, and prompt management. This companion library works with the [OpenRouter Python client](https://github.com/dingo-actual/openrouter-python-client) to offer:
+A comprehensive Python library for working with OpenRouter models, providing utilities for filtering, analyzing, and prompt management. This companion library works with the [OpenRouter Python client](https://github.com/jmazzahacks/openrouter-python-client) to offer:
 
 - **Model Filtering & Analysis**: Find models by capabilities, pricing, and features
 - **Prompt Management**: Template-based prompt system with variable substitution
@@ -23,6 +23,16 @@ pip install -r requirements.txt
 - Python 3.9+
 - OpenRouter API key (set as `OPENROUTER_API_KEY` environment variable)
 - The OpenRouter Python client (automatically installed from GitHub)
+
+## Development & Testing
+
+The test suite uses lightweight fakes, so most tests run without an API key or
+network access.
+
+```bash
+pip install -e ".[test]"   # install the package plus pytest
+pytest                     # run the full suite
+```
 
 ## Quick Start
 
@@ -144,15 +154,12 @@ from openrouter_companion import Prompt
 
 class CustomPrompt(Prompt):
     def _render_content(self, **kwargs):
-        # Implement your prompt logic here
+        # Implement your prompt logic here (required)
         return "Your prompt content"
 
-    def get_required_params(self):
-        return ["param1", "param2"]
-
-    def validate_params(self, **kwargs):
-        # Custom validation logic
-        pass
+    def get_prompt_suffix(self):
+        # Optional: content appended after the main body
+        return "Respond in JSON."
 ```
 
 #### StringTemplatePrompt
@@ -185,9 +192,6 @@ from openrouter_companion import FileTemplatePrompt
 # Load from file
 file_prompt = FileTemplatePrompt("templates/system_prompt.txt")
 content = file_prompt.render()
-
-# Dynamic template path
-file_prompt.set_template_path("other_template.txt")
 ```
 
 ## Usage Examples
@@ -274,8 +278,9 @@ class ErrorCorrectionPrompt(Prompt):
     """Prompt for providing error feedback during iterative generation."""
 
     def _render_content(self, **kwargs):
-        self.validate_params(**kwargs)
         last_error = kwargs.get('last_error')
+        if not last_error or not isinstance(last_error, str):
+            raise ValueError("last_error is required and must be a string")
 
         return f"""The previous strategy had issues. Please fix them.
 
@@ -283,14 +288,6 @@ ERRORS FOUND:
 {last_error}
 
 Please provide a corrected version."""
-
-    def validate_params(self, **kwargs):
-        last_error = kwargs.get('last_error')
-        if not last_error or not isinstance(last_error, str):
-            raise ValueError("last_error is required and must be a string")
-
-    def get_required_params(self):
-        return ['last_error']
 
 # Usage
 error_prompt = ErrorCorrectionPrompt()
@@ -347,7 +344,7 @@ def filter_models(
     capabilities: ModelCapability = ModelCapability.NONE,
     include_deprecated: bool = False,
     include_problematic_variants: bool = True,
-    sort_order: SortOrder = SortOrder.NONE
+    sort_order: SortOrder = SortOrder.PRICE_ASC
 ) -> List[ModelInfo]:
 ```
 
@@ -377,13 +374,9 @@ def filter_models(
 
 ```python
 class Prompt(ABC):
-    def render(**kwargs) -> str:          # Main rendering method
+    def render(**kwargs) -> str:          # Main rendering method (body + suffix)
     def _render_content(**kwargs) -> str: # Abstract method to implement
-    def get_prompt_suffix() -> str:       # Optional suffix content
-    def validate_params(**kwargs) -> None: # Parameter validation
-    def get_required_params() -> list[str]: # Required parameter names
-    def get_optional_params() -> list[str]: # Optional parameter names
-    def get_schema() -> dict | None:       # JSON schema for structured output
+    def get_prompt_suffix() -> str:       # Optional suffix content (override to use)
 ```
 
 #### StringTemplatePrompt
@@ -400,8 +393,7 @@ class StringTemplatePrompt(Prompt):
 ```python
 class FileTemplatePrompt(Prompt):
     def __init__(template_path: str)
-    def get_template_path() -> str:        # Get current template path
-    def set_template_path(path: str) -> None: # Set new template path
+    # render() loads and returns the file contents
 ```
 
 ## Configuration
